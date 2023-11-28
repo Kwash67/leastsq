@@ -1,7 +1,7 @@
 /* My Reg Number: 230184136 */
 #include <stdio.h>
 
-// GLOBAL CONSTANTS
+// GLOBAL VARIABLES
 int try_again = 0;
 float sum_of_pdt = 0;
 float sum_of_x = 0;
@@ -68,9 +68,10 @@ float accept_value(char item)
         do
         {
             scanf("%f", &val);
+            while(getchar()!='\n');
             if (val < 4 || val > 20)
             {
-                printf("The number must be between 4 and 20 (inclusive)\n");
+                printf("The number must be between 4 and 20 (inclusive)\n   ");
             }
         } while (val < 4 || val > 20);
         return val;
@@ -81,9 +82,10 @@ float accept_value(char item)
         do
         {
             scanf("%f", &val2);
+            while(getchar()!='\n');
             if (val2 < 0.000005 || val2 > 1000000.0)
             {
-                printf("The number must be between 0.000005 and 1000000.0\n");
+                printf("The number must be between 0.000005 and 1000000.0\n   ");
             }
         } while (val2 < 0.000005 || val2 > 1000000.0);
         return val2;
