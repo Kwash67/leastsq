@@ -5,8 +5,12 @@
 const int min_coords=4, max_coords=20; 
 const float min_value=0.000005, max_value=1000000.0;
 
+/* GLOBAL VARIABLE */
+float coord[max_coords][2];
+
 /* FUNCTION PROTOTYPES */
 float validate_input(char item);
+void collect_coordinates(int rows);
 void display_table(float coord_list[][2], int rows);
 float calc_sum_of_x(float coord_list[][2], int rows);
 float calc_sum_of_y(float coord_list[][2], int rows);
@@ -21,41 +25,22 @@ int main(void)
     int try_again = 0;
     do
     {
-        /* Reset all Sums to Zero on every try */
-        float sum_of_x = 0;
-        float sum_of_y = 0;
-        float sum_of_pdt = 0; 
-        float sum_of_x_squared = 0;
+        printf("\nThis program calculates gradient and offset.\n");
+        
+        /* Collecting the number of data pairs */
+        int rows = (int)validate_input('r'); 
 
-        printf("This program calculates gradient and offset.\n");
-        int rows;
-        printf("Enter the number of coordinate pairs (between 4 to 20): ");
-        rows = (int)validate_input('r'); 
-        float coord[rows][2];
-        printf("Enter the data coordinates in the table below.\n");
-        printf("\n");
-        int row, col;
-        for (col = 0; col < 2; col++)
-        {
-            if (col == 0)
-                printf("X values\n--------\n");
-            else if (col == 1)
-                printf("Y values\n--------\n");
-            for (row = 0; row < rows; row++)
-            {
-                printf("   ");
-                coord[row][col] = validate_input('p'); 
-            }
-        }
+        /* Collecting X and Y coordinates */
+        collect_coordinates(rows);
         
         /* Displaying collected values */
         display_table(coord, rows);
 
         /* Calculating Sums */
-        sum_of_x= calc_sum_of_x(coord, rows);
-        sum_of_y= calc_sum_of_y(coord, rows);
-        sum_of_pdt= calc_sum_of_pdt(coord, rows);
-        sum_of_x_squared= calc_sum_of_x_squared(coord, rows);
+        float sum_of_x= calc_sum_of_x(coord, rows);
+        float sum_of_y= calc_sum_of_y(coord, rows);
+        float sum_of_pdt= calc_sum_of_pdt(coord, rows);
+        float sum_of_x_squared= calc_sum_of_x_squared(coord, rows);
 
         /* Calculating and displaying gradient and offset */
         calc_gradient(rows, sum_of_x, sum_of_y, sum_of_pdt, sum_of_x_squared);
@@ -77,11 +62,12 @@ float validate_input(char item)
         float val;
         do
         {
+            printf("Enter the number of coordinate pairs (between 4 to 20): ");
             scanf("%f", &val);
             while(getchar()!='\n');
             if (val < min_coords || val > max_coords)
             {
-                printf("The number must be between %d and %d (inclusive): ", min_coords, max_coords);
+                printf("The number must be between %d and %d (inclusive)\n", min_coords, max_coords);
             }
         } while (val < min_coords || val > max_coords);
         return val;
@@ -99,6 +85,23 @@ float validate_input(char item)
             }
         } while (val2 < min_value || val2 > max_value);
         return val2;
+    }
+}
+void collect_coordinates(int rows){
+    printf("\nEnter the data coordinates in the table below.\n");
+    printf("\n");
+    int row, col;
+    for (col = 0; col < 2; col++)
+    {
+        if (col == 0)
+            printf("X values\n--------\n");
+        else if (col == 1)
+            printf("Y values\n--------\n");
+        for (row = 0; row < rows; row++)
+        {
+            printf("   ");
+            coord[row][col] = validate_input('p'); 
+        }
     }
 }
 void display_table(float coord_list[][2], int rows){
@@ -174,8 +177,8 @@ int retry_request()
         if (response == 'y')
         {
             printf("\n");
-            return 1;
             valid = 1;
+            return 1;
         }
         else if (response == 'n')
         {
