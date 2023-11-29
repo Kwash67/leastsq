@@ -2,11 +2,11 @@
 #include <stdio.h>
 
 /* GLOBAL CONSTANTS */
-const int min_coords=4, max_coords=20; 
+const int min_coord_pairs=4, max_coord_pairs=20; 
 const float min_value=0.000005, max_value=1000000.0;
 
 /* GLOBAL VARIABLE */
-float coord[max_coords][2];
+float coordinates[max_coord_pairs][2];
 
 /* FUNCTION PROTOTYPES */
 float validate_input(char item);
@@ -26,7 +26,7 @@ int main(void)
     do
     {
         printf("\nThis program calculates gradient and offset.\n");
-        
+
         /* Collecting the number of data pairs */
         int rows = (int)validate_input('r'); 
 
@@ -34,13 +34,13 @@ int main(void)
         collect_coordinates(rows);
         
         /* Displaying collected values */
-        display_table(coord, rows);
+        display_table(coordinates, rows);
 
         /* Calculating Sums */
-        float sum_of_x= calc_sum_of_x(coord, rows);
-        float sum_of_y= calc_sum_of_y(coord, rows);
-        float sum_of_pdt= calc_sum_of_pdt(coord, rows);
-        float sum_of_x_squared= calc_sum_of_x_squared(coord, rows);
+        float sum_of_x= calc_sum_of_x(coordinates, rows);
+        float sum_of_y= calc_sum_of_y(coordinates, rows);
+        float sum_of_pdt= calc_sum_of_pdt(coordinates, rows);
+        float sum_of_x_squared= calc_sum_of_x_squared(coordinates, rows);
 
         /* Calculating and displaying gradient and offset */
         calc_gradient(rows, sum_of_x, sum_of_y, sum_of_pdt, sum_of_x_squared);
@@ -59,33 +59,40 @@ float validate_input(char item)
     /* item = 'r' for coord pairs, item = 'p' for x or y value */
     if (item == 'r')
     {
-        float val;
-        do
-        {
-            printf("Enter the number of coordinate pairs (between 4 to 20): ");
-            scanf("%f", &val);
-            while(getchar()!='\n');
-            if (val < min_coords || val > max_coords)
-            {
-                printf("The number must be between %d and %d (inclusive)\n", min_coords, max_coords);
+        int coordPairs;
+        int input_check;
+        do {
+            printf("Enter the number of coordinate pairs (between %d to %d): ", min_coord_pairs, max_coord_pairs);
+            input_check = scanf("%d", &coordPairs); //input_check = 1 when the input is int, otherwise 0
+
+            if (input_check != 1 || coordPairs < min_coord_pairs || coordPairs > max_coord_pairs) {
+                printf("Invalid input or value out of range. Please enter a valid float between %d and %d (inclusive).\n", min_coord_pairs, max_coord_pairs);
+                // Clear the input buffer
+                while (getchar() != '\n');
+                coordPairs = -1; // Reset value for re-prompting
             }
-        } while (val < min_coords || val > max_coords);
-        return val;
+
+        } while (coordPairs < min_coord_pairs || coordPairs > max_coord_pairs);
+        return coordPairs;
     }
-    else
+    else if(item == 'p')
     {
-        float val2;
-        do
-        {
-            scanf("%f", &val2);
-            while(getchar()!='\n');
-            if (val2 < min_value || val2 > max_value)
-            {
-                printf("The number must be between %f and %f\n   ", min_value, max_value);
+        float point;
+        int input_check;
+        do {
+            input_check = scanf("%f", &point); //input_check = 1 when the input matches a float, otherwise 0
+
+            if (input_check != 1 || point < min_value || point > max_value) {
+                printf("Invalid input or value out of range. Please enter a valid float between %f and %f.\n   ", min_value, max_value);
+                // Clear the input buffer
+                while (getchar() != '\n');
+                point = -1; // Reset value for re-prompting
             }
-        } while (val2 < min_value || val2 > max_value);
-        return val2;
+
+        } while (point < min_value || point > max_value);
+        return point;
     }
+    return 0;
 }
 void collect_coordinates(int rows){
     printf("\nEnter the data coordinates in the table below.\n");
@@ -100,7 +107,7 @@ void collect_coordinates(int rows){
         for (row = 0; row < rows; row++)
         {
             printf("   ");
-            coord[row][col] = validate_input('p'); 
+            coordinates[row][col] = validate_input('p'); 
         }
     }
 }
