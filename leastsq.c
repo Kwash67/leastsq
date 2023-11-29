@@ -56,7 +56,7 @@ int main(void)
 // FUNCTION DEFINITIONS
 float validate_input(char item)
 {
-    /* item = 'r' for coord pairs, item = 'p' for x or y value */
+    /* item = 'r' for coord pairs (Rows), item = 'v' for x or y Value */
     if (item == 'r')
     {
         int coordPairs;
@@ -75,7 +75,7 @@ float validate_input(char item)
         } while (coordPairs < min_coord_pairs || coordPairs > max_coord_pairs);
         return coordPairs;
     }
-    else if(item == 'p')
+    else if(item == 'v')
     {
         float point;
         int input_check;
@@ -107,7 +107,7 @@ void collect_coordinates(int rows){
         for (row = 0; row < rows; row++)
         {
             printf("   ");
-            coordinates[row][col] = validate_input('p'); 
+            coordinates[row][col] = validate_input('v'); 
         }
     }
 }
