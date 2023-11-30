@@ -71,20 +71,20 @@ float validate_input(char item)
     */
     if (item == 'r')
     {
-        int coordPairs;
+        int coord_pairs;
         int input_check;
         do {
             printf("Enter the number of coordinate pairs (between %d to %d): ", min_coord_pairs, max_coord_pairs);
-            input_check = scanf("%d", &coordPairs); //input_check = 1 when the input is int, otherwise 0
+            input_check = scanf("%d", &coord_pairs); //input_check = 1 when the input is int, otherwise 0
 
-            if (input_check != 1 || coordPairs < min_coord_pairs || coordPairs > max_coord_pairs) {
+            if (input_check != 1 || coord_pairs < min_coord_pairs || coord_pairs > max_coord_pairs) {
                 printf("Invalid input or value out of range. Please enter a valid float between %d and %d (inclusive).\n", min_coord_pairs, max_coord_pairs);
                 while (getchar() != '\n'); // Clear the input buffer
-                coordPairs = -1; // Reset value for re-prompting
+                coord_pairs = -1; // Reset value for re-prompting
             }
 
-        } while (coordPairs < min_coord_pairs || coordPairs > max_coord_pairs);
-        return coordPairs;
+        } while (coord_pairs < min_coord_pairs || coord_pairs > max_coord_pairs);
+        return coord_pairs;
     }
     else if(item == 'v')
     {
